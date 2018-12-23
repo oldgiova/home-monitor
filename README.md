@@ -35,5 +35,13 @@ Using database SCOSSA
 nohup sudo python3 get-scossa/main.py &
 ```
 
+* we'll use grafana for displaying it: let's create a grafana storage first
+```
+docker run -d -v ${HOME}/docker/grafana --name grafana-storage busybox:latest
+docker run --rm -d --net=host --name grafana --volumes-from grafana-storage fg2it/grafana-armhf-armhf
+```
 
-
+* with grafana create a dashboard with a query like that:
+```
+SELECT sum("value")  * 120 FROM "scossa_led" WHERE $timeFilter GROUP BY time(30s) fill(null)
+```
