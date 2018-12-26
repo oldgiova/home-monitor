@@ -43,5 +43,5 @@ docker run --rm -d --net=host --name grafana --volumes-from grafana-storage fg2i
 
 * with grafana create a dashboard with a query like that:
 ```
-SELECT sum("value")  * 120 FROM "scossa_led" WHERE $timeFilter GROUP BY time(30s) fill(null)
+SELECT sum("value") * 60 FROM "scossa_led" WHERE $timeFilter GROUP BY time(1m) fill(null)
 ```
