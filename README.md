@@ -45,3 +45,25 @@ docker run --rm -d --net=host --name grafana --volumes-from grafana-storage fg2i
 ```
 SELECT sum("value") * 60 FROM "scossa_led" WHERE $timeFilter GROUP BY time(1m) fill(null)
 ```
+
+
+
+----------------------
+## Environmental
+* setup influxdb
+```
+docker exec -it influxdb /usr/bin/influx
+
+Connected to http://localhost:8086 version 1.2.2
+InfluxDB shell version: 1.2.2
+> CREATE DATABASE TEMPERATURE
+> use TEMPERATURE
+Using database TEMPERATURE
+> GRANT ALL PRIVILEGES ON TEMPERATURE TO pippo
+```
+
+
+* start get-temperature with sudo:
+```
+nohup sudo python3 get-temperature/main.py &
+```
