@@ -30,7 +30,7 @@ def ldr_get():
     return True
 
 def insert_influxdb_row():
-    now = datetime.datetime.now()
+    utcnow = datetime.datetime.utcnow()
     '''json_body template'''
     json_body = [
             {
@@ -38,13 +38,13 @@ def insert_influxdb_row():
                 "tags": {
                     "host": "rpi2"
                     },
-                "time": now,
+                "time": utcnow,
                 "fields": {
                     "value": 1
                     }
                 }
             ]
-    logging.debug('writing a value to influxdb with time ', now)
+    logging.debug('writing a value to influxdb with time ', utcnow)
     influxdbclient.write_points(json_body)
 
 

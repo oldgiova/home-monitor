@@ -44,7 +44,7 @@ def calculates_real_temp(temp, cpu_temp, factor, difference):
     return temp - difference
 
 def insert_influxdb_row(temperature):
-    now = datetime.datetime.now()
+    utcnow = datetime.datetime.utcnow()
     '''json_body template'''
     json_body = [
             {
@@ -52,7 +52,7 @@ def insert_influxdb_row(temperature):
                 "tags": {
                     "host": "rpi3"
                     },
-                "time": now,
+                "time": utcnow,
                 "fields": {
                     "value": temperature
                     }
