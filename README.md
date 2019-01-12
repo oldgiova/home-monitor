@@ -69,3 +69,9 @@ Using database TEMPERATURE
 nohup sudo python3 get-temperature/main.py &
 ```
 or use the systemd script inside get-temperature folder
+
+----------------------
+## Light timer
+A raspberry pi that controls a relay board for switch light on and off 
+
+
