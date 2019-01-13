@@ -1,0 +1,15 @@
+[Unit]
+Description=Home Monitor - Get Temperature and Humidity from a DHT11 sensor
+After=network.target
+
+[Service]
+Type=simple
+# Another Type option: forking
+User=root
+WorkingDirectory=/home/nonno/src/home-monitor/get-environment
+ExecStart=/usr/bin/python3 /home/nonno/src/home-monitor/get-environment/main.py
+Restart=on-failure
+# Other Restart options: or always, on-abort, etc
+
+[Install]
+WantedBy=multi-user.target
