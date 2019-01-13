@@ -70,6 +70,8 @@ nohup sudo python3 get-temperature/main.py &
 ```
 or use the systemd script inside get-temperature folder
 
+Another way of doing it is to use DHT11 sensor. Use get-environment/main.py script
+
 ----------------------
 ## Light timer
 A raspberry pi that controls a relay board for switch light on and off 
