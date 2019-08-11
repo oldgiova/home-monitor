@@ -1,6 +1,7 @@
 import RPi.GPIO as GPIO
 from influxdb import InfluxDBClient
 from datetime import datetime,time
+from astral import *
 from time import sleep
 import logging,pdb
 
@@ -15,6 +16,7 @@ influxdb_db = 'LIGHT'
 influxdb_host = 'localhost'
 influxdb_port = 8086
 influxdbclient = InfluxDBClient(influxdb_host, influxdb_port, influxdb_user, influxdb_password, influxdb_db)
+tz = 'Rome'
 
 '''logging config'''
 logging.basicConfig(
@@ -97,7 +99,12 @@ def check_if_dark():
             logging.debug('we have daylight or its deep night')
             return False
 
-
+def today_it_raises_at():
+    '''find today sunrise'''
+    a = Astral
+    location = a[tz]
+    d = date
+    sun = location.sun
 
 def main():
     logging.info('Starting up ')
