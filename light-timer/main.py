@@ -10,7 +10,7 @@ import logging,pdb
 RELAIS_4_GPIO = 2
 '''hour to switch light off'''
 off_time = time(23,59)
-sleep_time = 1800
+sleep_time = 600
 influxdb_user = 'pippo'
 influxdb_password = 'pippopassword'
 influxdb_db = 'LIGHT'
