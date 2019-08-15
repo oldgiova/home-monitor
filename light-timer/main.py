@@ -107,7 +107,7 @@ def astral_query_time(today):
     return sun['dawn'], sun['sunset']
 
 def check_astral():
-    ```astral check```
+    '''astral check'''
     now = datetime.now()
     today = now.date()
     #pdb.set_trace()
