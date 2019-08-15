@@ -108,7 +108,7 @@ def astral_query_time(today):
     return sun['dawn'], sun['sunset']
 
 def check_astral():
-    ```astral check```
+    '''astral check'''
     local_tz = timezone('Europe/Rome')
     now = datetime.now()
     today = now.date()
