@@ -3,6 +3,7 @@ from influxdb import InfluxDBClient
 from datetime import datetime,time
 from astral import *
 from time import sleep
+from pytz import timezone
 import logging,pdb
 
 '''initial var'''
@@ -107,13 +108,14 @@ def astral_query_time(today):
     return sun['dawn'], sun['sunset']
 
 def check_astral():
-    '''astral check'''
+    ```astral check```
+    local_tz = timezone('Europe/Rome')
     now = datetime.now()
     today = now.date()
     #pdb.set_trace()
     logging.debug('today is: ' + today.strftime("%Y%m%d"))
     today_dawn, today_sunset = astral_query_time(today)
-    today_datetime = datetime.astimezone(now)
+    today_datetime = now.astimezone(local_tz)
     # it's 03:00
     # dawn: 05:00
     # sunset: 21:00
