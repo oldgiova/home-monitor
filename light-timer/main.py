@@ -55,51 +55,6 @@ def insert_influxdb_row(value):
     logging.debug('writing a value to influxdb with time ' + utcnow.strftime("%H:%M:%S"))
     influxdbclient.write_points(json_body)
 
-def check_if_dark():
-    '''tuned for nothern Italy'''
-    now = datetime.now()
-    now_time = now.time()
-    #pdb.set_trace()
-    logging.debug('now time: ' + now_time.strftime("%H %M"))
-    currentMonth = datetime.now().month
-    logging.debug('current month: ' + str(currentMonth))
-
-    if currentMonth == 1 or currentMonth == 11 or currentMonth == 12:
-        if now_time >= time(17,00) and now_time <= off_time:
-            logging.debug('its ' + str(currentMonth) + ' and its dark ' + off_time.strftime("%H %M"))
-            return True
-        else:
-            logging.debug('we have daylight or its deep night')
-            return False
-    elif currentMonth == 2 or currentMonth == 3:
-        if now_time >= time(18,00) and now_time <= off_time:
-            logging.debug('its ' + str(currentMonth) + ' and its dark ' + off_time.strftime("%H %M"))
-            return True
-        else:
-            logging.debug('we have daylight or its deep night')
-            return False
-    elif currentMonth == 10:
-        if now_time >= time(19,00) and now_time <= off_time:
-            logging.debug('its ' + str(currentMonth) + ' and its dark ' + off_time.strftime("%H %M"))
-            return True
-        else:
-            logging.debug('we have daylight or its deep night')
-            return False
-    elif currentMonth == 4 or currentMonth == 5 or currentMonth == 9:
-        if now_time >= time(20,00) and now_time <= off_time:
-            logging.debug('its ' + str(currentMonth) + ' and its dark ' + off_time.strftime("%H %M"))
-            return True
-        else:
-            logging.debug('we have daylight or its deep night')
-            return False
-    elif currentMonth == 6 or currentMonth == 7 or currentMonth == 8:
-        if now_time >= time(21,00) and now_time <= off_time:
-            logging.debug('its ' + str(currentMonth) + ' and its dark ' + off_time.strftime("%H %M"))
-            return True
-        else:
-            logging.debug('we have daylight or its deep night')
-            return False
-
 def astral_query_time(today):
     '''find today sunrise'''
     a = Astral()
@@ -118,9 +73,6 @@ def check_astral():
     logging.debug('today is: ' + today.strftime("%Y%m%d"))
     today_dawn, today_sunset = astral_query_time(today)
     today_datetime = now.astimezone(local_tz)
-    # it's 03:00
-    # dawn: 05:00
-    # sunset: 21:00
     if (
         today_datetime <= today_sunset and 
         today_datetime <= today_dawn
@@ -128,9 +80,6 @@ def check_astral():
        '''It's early morning, keep on'''
        logging.debug("It's early morning, keep on")
        return True
-    # it's 10:00
-    # dawn: 05:00
-    # sunset: 21:00
     if (
         today_datetime <= today_sunset and 
         today_datetime >= today_dawn
@@ -138,9 +87,6 @@ def check_astral():
        '''It's morning, switch off'''
        logging.debug("It's morning, switch off")
        return False
-    # it's 22:00
-    # dawn: 05:00
-    # sunset: 21:00
     if (
         today_datetime >= today_sunset and 
         today_datetime >= today_dawn
@@ -158,7 +104,6 @@ def main():
     try: 
         '''main program'''
         while True:
-            #is_dark = check_if_dark()
             is_dark = check_astral()
             if is_dark:
                 light_on()
