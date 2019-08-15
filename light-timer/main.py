@@ -111,6 +111,8 @@ def check_astral():
     '''astral check'''
     local_tz = timezone('Europe/Rome')
     now = datetime.now()
+    #fix timezone naive problem
+    now = local_tz.localize(now)
     today = now.date()
     #pdb.set_trace()
     logging.debug('today is: ' + today.strftime("%Y%m%d"))
