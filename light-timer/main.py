@@ -99,12 +99,52 @@ def check_if_dark():
             logging.debug('we have daylight or its deep night')
             return False
 
-def today_it_raises_at():
+def astral_query_time(today):
     '''find today sunrise'''
-    a = Astral
+    a = Astral()
     location = a[tz]
-    d = date
-    sun = location.sun
+    sun = location.sun(local=True, date=today)
+    return sun['dawn'], sun['sunset']
+
+def check_astral():
+    ```astral check```
+    now = datetime.now()
+    today = now.date()
+    #pdb.set_trace()
+    logging.debug('today is: ' + today.strftime("%Y%m%d"))
+    today_dawn, today_sunset = astral_query_time(today)
+    today_datetime = datetime.astimezone(now)
+    # it's 03:00
+    # dawn: 05:00
+    # sunset: 21:00
+    if (
+        today_datetime <= today_sunset and 
+        today_datetime <= today_dawn
+       ):
+       '''It's early morning, keep on'''
+       logging.debug("It's early morning, keep on")
+       return True
+    # it's 10:00
+    # dawn: 05:00
+    # sunset: 21:00
+    if (
+        today_datetime <= today_sunset and 
+        today_datetime >= today_dawn
+       ):
+       '''It's morning, switch off'''
+       logging.debug("It's morning, switch off")
+       return False
+    # it's 22:00
+    # dawn: 05:00
+    # sunset: 21:00
+    if (
+        today_datetime >= today_sunset and 
+        today_datetime >= today_dawn
+       ):
+       '''It's evening, switch on'''
+       logging.debug("It's evening, switch on")
+       return True
+
 
 def main():
     logging.info('Starting up ')
@@ -114,7 +154,8 @@ def main():
     try: 
         '''main program'''
         while True:
-            is_dark = check_if_dark()
+            #is_dark = check_if_dark()
+            is_dark = check_astral()
             if is_dark:
                 light_on()
                 insert_influxdb_row(2)
