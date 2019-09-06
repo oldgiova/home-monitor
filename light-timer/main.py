@@ -21,7 +21,7 @@ tz = 'Rome'
 
 '''logging config'''
 logging.basicConfig(
-        level=logging.DEBUG,
+        level=logging.INFO,
         filename='light.log',
         format='[%(asctime)s] %(levelname)s:%(message)s',
         datefmt='%m/%d/%Y %I:%M:%S %p')
