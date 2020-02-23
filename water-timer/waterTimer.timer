@@ -1,0 +1,8 @@
+[Unit]
+Description=Home Light Timer
+
+[Timer]
+OnCalendar=daily *-*-* 23:00:00
+
+[Install]
+WantedBy=timers.target

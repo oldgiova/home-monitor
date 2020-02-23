@@ -1,0 +1,15 @@
+[Unit]
+Description=Home Water Timer
+After=network.target
+
+[Service]
+Type=simple
+# Another Type option: forking
+User=root
+WorkingDirectory=/home/nonno/src/home-monitor/water-timer
+ExecStart=/usr/bin/python3 /home/nonno/src/home-monitor/water-timer/main.py
+Restart=on-failure
+# Other Restart options: or always, on-abort, etc
+
+[Install]
+WantedBy=multi-user.target
