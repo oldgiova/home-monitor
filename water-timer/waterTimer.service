@@ -8,7 +8,7 @@ Type=simple
 User=root
 WorkingDirectory=/home/nonno/src/home-monitor/water-timer
 ExecStart=/usr/bin/python3 /home/nonno/src/home-monitor/water-timer/main.py
-Restart=on-failure
+Restart=no
 # Other Restart options: or always, on-abort, etc
 
 [Install]
