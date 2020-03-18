@@ -3,7 +3,7 @@ from influxdb import InfluxDBClient
 from datetime import datetime,time
 from time import sleep
 from pytz import timezone
-import logging,pdb
+import logging,pdb, sys
 
 '''initial var'''
 RELAIS_4_GPIO = 22
@@ -59,12 +59,12 @@ def main():
     GPIO.setup(RELAIS_4_GPIO, GPIO.OUT, initial=GPIO.HIGH)
     try: 
         '''main program'''
-        while True:
-            water_on()
-            insert_influxdb_row(2)
-            sleep(sleep_time)
-            water_off()
-            insert_influxdb_row(1)
+        water_on()
+        insert_influxdb_row(2)
+        sleep(sleep_time)
+        water_off()
+        insert_influxdb_row(1)
+        sys.exit()
 
     except KeyboardInterrupt:
         logging.info('shutting down for keyboard interrupt')
