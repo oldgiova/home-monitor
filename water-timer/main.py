@@ -1,5 +1,6 @@
 import RPi.GPIO as GPIO
 from influxdb import InfluxDBClient
+from itertools import repeat
 from datetime import datetime,time
 from time import sleep
 from pytz import timezone
@@ -7,7 +8,7 @@ import logging,pdb, sys
 
 '''initial var'''
 RELAIS_4_GPIO = 22
-sleep_time = 600
+water_time = 600
 influxdb_user = 'pippo'
 influxdb_password = 'pippopassword'
 influxdb_db = 'LIGHT'
@@ -60,10 +61,10 @@ def main():
     try: 
         '''main program'''
         water_on()
-        insert_influxdb_row(2)
-        sleep(sleep_time)
+        for i in range(water_time):
+            insert_influxdb_row(1)
+            sleep(1)
         water_off()
-        insert_influxdb_row(1)
         sys.exit()
 
     except KeyboardInterrupt:
