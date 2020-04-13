@@ -40,11 +40,11 @@ def water_status():
     pin_status = GPIO.input(RELAIS_4_GPIO)
     print('pin status: ', pin_status, type(pin_status))
     if pin_status == 1:
-        logging.info('Water is ON')
-        print('Water is ON')
-    else:
         logging.info('Water is OFF')
         print('Water is OFF')
+    else:
+        logging.info('Water is ON')
+        print('Water is ON')
     return True
 
 def insert_influxdb_row(value):
@@ -69,23 +69,9 @@ def main():
     logging.info('Starting up ')
     '''GPIO settings'''
     GPIO.setmode(GPIO.BCM)
-    GPIO.setup(RELAIS_4_GPIO, GPIO.OUT, initial=GPIO.HIGH)
-    try: 
-        '''main program'''
-        water_status()
-
-    except KeyboardInterrupt:
-        logging.info('shutting down for keyboard interrupt')
-        water_off()
-
-    except:
-        logging.info('shutting down for other interrupt')
-        water_off()
-        inser_influxdb_row(1)
-
-    finally:
-        GPIO.cleanup()
-
+    GPIO.setup(RELAIS_4_GPIO, GPIO.OUT)
+    '''main program'''
+    water_status()
 
 if __name__ == "__main__":
     main()

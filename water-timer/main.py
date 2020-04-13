@@ -8,7 +8,7 @@ import logging,pdb, sys
 
 '''initial var'''
 RELAIS_4_GPIO = 22
-water_time = 600
+water_time = 900
 influxdb_user = 'pippo'
 influxdb_password = 'pippopassword'
 influxdb_db = 'LIGHT'
