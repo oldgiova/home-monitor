@@ -35,6 +35,17 @@ def water_off():
     logging.debug('Water Off')
     return True
 
+def water_status():
+    pin_status = GPIO.input(RELAIS_4_GPIO)
+    print('pin status: ', pin_status, type(pin_status))
+    if pin_status == 1:
+        logging.info('Water is OFF')
+        print('Water is OFF')
+    else:
+        logging.info('Water is ON')
+        print('Water is ON')
+    return True
+
 def insert_influxdb_row(value):
     utcnow = datetime.utcnow()
     '''json_body template'''
@@ -57,27 +68,29 @@ def main():
     logging.info('Starting up ')
     '''GPIO settings'''
     GPIO.setmode(GPIO.BCM)
-    GPIO.setup(RELAIS_4_GPIO, GPIO.OUT, initial=GPIO.HIGH)
+    GPIO.setwarnings(False)
+    #GPIO.setup(RELAIS_4_GPIO, GPIO.OUT, initial=GPIO.HIGH)
+    GPIO.setup(RELAIS_4_GPIO, GPIO.OUT)
     try: 
         '''main program'''
         water_on()
+        water_status()
         for i in range(water_time):
             insert_influxdb_row(1)
             sleep(1)
         water_off()
+        water_status()
         sys.exit()
 
     except KeyboardInterrupt:
         logging.info('shutting down for keyboard interrupt')
         water_off()
-        insert_influxdb_row(1)
+        water_status()
 
     except:
         logging.info('shutting down for other interrupt')
         water_off()
-        insert_influxdb_row(1)
-
-    finally:
+        water_status()
         GPIO.cleanup()
 
 
