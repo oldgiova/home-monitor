@@ -91,7 +91,7 @@ def main():
         logging.info('shutting down for other interrupt')
         water_off()
         water_status()
-        GPIO.cleanup()
+        #GPIO.cleanup()
 
 
 if __name__ == "__main__":
