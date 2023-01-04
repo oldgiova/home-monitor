@@ -1,5 +1,4 @@
 import RPi.GPIO as GPIO
-from influxdb import InfluxDBClient
 from itertools import repeat
 from datetime import datetime,time
 from time import sleep
@@ -8,13 +7,7 @@ import logging,pdb, sys
 
 '''initial var'''
 RELAIS_4_GPIO = 22
-water_time = 900
-influxdb_user = 'pippo'
-influxdb_password = 'pippopassword'
-influxdb_db = 'LIGHT'
-influxdb_host = 'localhost'
-influxdb_port = 8086
-influxdbclient = InfluxDBClient(influxdb_host, influxdb_port, influxdb_user, influxdb_password, influxdb_db)
+water_time = 1800 #30 min
 tz = 'Rome'
 
 '''logging config'''
@@ -46,24 +39,6 @@ def water_status():
         print('Water is ON')
     return True
 
-def insert_influxdb_row(value):
-    utcnow = datetime.utcnow()
-    '''json_body template'''
-    json_body = [
-            {
-                "measurement": "water",
-                "tags": {
-                    "host": "cortile"
-                    },
-                "time": utcnow,
-                "fields": {
-                    "value": value
-                    }
-                }
-            ]
-    logging.debug('writing a value to influxdb with time ' + utcnow.strftime("%H:%M:%S"))
-    influxdbclient.write_points(json_body)
-
 def main():
     logging.info('Starting up ')
     '''GPIO settings'''
@@ -76,7 +51,6 @@ def main():
         water_on()
         water_status()
         for i in range(water_time):
-            insert_influxdb_row(1)
             sleep(1)
         water_off()
         water_status()

@@ -1,6 +1,4 @@
 import RPi.GPIO as GPIO
-from influxdb import InfluxDBClient
-from datetime import datetime,time
 from astral import *
 from time import sleep
 from pytz import timezone
@@ -11,12 +9,6 @@ RELAIS_4_GPIO = 2
 '''hour to switch light off'''
 off_time = time(23,59)
 sleep_time = 600
-influxdb_user = 'pippo'
-influxdb_password = 'pippopassword'
-influxdb_db = 'LIGHT'
-influxdb_host = 'localhost'
-influxdb_port = 8086
-influxdbclient = InfluxDBClient(influxdb_host, influxdb_port, influxdb_user, influxdb_password, influxdb_db)
 tz = 'Rome'
 
 '''logging config'''
@@ -36,24 +28,6 @@ def light_off():
     GPIO.output(RELAIS_4_GPIO, GPIO.HIGH)
     logging.debug('Light Off')
     return True
-
-def insert_influxdb_row(value):
-    utcnow = datetime.utcnow()
-    '''json_body template'''
-    json_body = [
-            {
-                "measurement": "light",
-                "tags": {
-                    "host": "cortile"
-                    },
-                "time": utcnow,
-                "fields": {
-                    "value": value
-                    }
-                }
-            ]
-    logging.debug('writing a value to influxdb with time ' + utcnow.strftime("%H:%M:%S"))
-    influxdbclient.write_points(json_body)
 
 def astral_query_time(today):
     '''find today sunrise'''
@@ -107,10 +81,8 @@ def main():
             is_dark = check_astral()
             if is_dark:
                 light_on()
-                insert_influxdb_row(2)
             else:
                 light_off()
-                insert_influxdb_row(1)
             sleep(sleep_time)
 
     except KeyboardInterrupt:
